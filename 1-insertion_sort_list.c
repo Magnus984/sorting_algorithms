@@ -8,43 +8,29 @@
  */
 void insertion_sort_list(listint_t **list)
 {
-	listint_t *current, *tmp, *tmp2;
+	listint_t *current, *temp;
 
-	current = *list;
-	while (current->next != NULL)
+	if (list == NULL || *list == NULL || (*list)->next == NULL)
+		return;
+
+	current = (*list)->next;
+	while (current != NULL)
 	{
-		if (current->n > current->next->n)
+		temp = current;
+		current = current->next;
+		while (temp->prev != NULL && temp->n < temp->prev->n)
 		{
-			tmp = current->next;
-			current->next = tmp->next;
-			tmp->prev = current->prev;
-			current->prev = tmp;
-			tmp->next = current;
-			if (current->next != NULL)
-				current->next->prev = current;
-			tmp->prev->next = tmp;
+			temp->prev->next = temp->next;
+			if (temp->next != NULL)
+				temp->next->prev = temp->prev;
+			temp->next = temp->prev;
+			temp->prev = temp->prev->prev;
+			temp->next->prev = temp;
+			if (temp->prev == NULL)
+				*list = temp;
+			else
+				temp->prev->next = temp;
 			print_list(*list);
-			while (tmp->prev != NULL && tmp->prev->n > tmp->n)
-			{
-				tmp2 = tmp->prev;
-				tmp2->next = tmp->next;
-				tmp->prev = tmp2->prev;
-				tmp2->prev = tmp;
-				tmp->next = tmp2;
-				tmp2->next->prev = tmp2;
-				if (tmp->prev == NULL)
-				{
-					*list = tmp;
-					print_list(*list);
-				}
-				else
-				{
-					tmp->prev->next = tmp;
-					print_list(*list);
-				}
-			}
 		}
-		else
-			current = current->next;
 	}
 }
