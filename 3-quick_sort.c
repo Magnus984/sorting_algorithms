@@ -80,6 +80,6 @@ void quick_sort(int *array, size_t size)
 {
 	if (size < 2)
 		return;
-	
+
 	quick_sort_array(array, 0, size - 1, size);
 }
